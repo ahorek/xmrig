@@ -29,7 +29,7 @@
 #include "sph_simd.h"
 #include "sph_echo.h"
 #include "sph_hamsi.h"
-#include "sph_fugue.h"
+#include "fugue-aesni.h"
 #include "sph_shabal.h"
 #include "sph_whirlpool.h"
 

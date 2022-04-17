@@ -7,7 +7,7 @@ set(HEADERS
     sph_bmw.h
     sph_cubehash.h
     sph_echo.h
-    sph_fugue.h
+    fugue-aesni.h
     sph_groestl.h
     sph_hamsi.h
     sph_jh.h
@@ -27,7 +27,7 @@ set(SOURCES
     sph_bmw.c
     sph_cubehash.c
     sph_echo.c
-    sph_fugue.c
+    fugue-aesni.c
     sph_groestl.c
     sph_hamsi.c
     sph_jh.c
@@ -60,22 +60,22 @@ if (CMAKE_C_COMPILER_ID MATCHES MSVC)
     set_source_files_properties(sph_skein.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_whirlpool.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
 elseif (CMAKE_C_COMPILER_ID MATCHES GNU OR CMAKE_C_COMPILER_ID MATCHES Clang)
-    set_source_files_properties(sph_blake.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_bmw.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_cubehash.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_echo.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_fugue.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_groestl.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_hamsi.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_jh.c PROPERTIES COMPILE_FLAGS "-Os -fno-tree-vrp")
-    set_source_files_properties(sph_keccak.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_luffa.c PROPERTIES COMPILE_FLAGS "-Os -Wno-unused-const-variable")
-    set_source_files_properties(sph_shabal.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_shavite.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_simd.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_sha2.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_skein.c PROPERTIES COMPILE_FLAGS "-Os")
-    set_source_files_properties(sph_whirlpool.c PROPERTIES COMPILE_FLAGS "-Os")
+    set_source_files_properties(sph_blake.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(sph_bmw.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(sph_cubehash.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(sph_echo.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(fugue-aesni.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(sph_groestl.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_hamsi.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_jh.c PROPERTIES COMPILE_FLAGS "-Os -fno-tree-vrp -s")
+    set_source_files_properties(sph_keccak.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_luffa.c PROPERTIES COMPILE_FLAGS "-Os -Wno-unused-const-variable -s")
+    set_source_files_properties(sph_shabal.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_shavite.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_simd.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(sph_sha2.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_skein.c PROPERTIES COMPILE_FLAGS "-Os -s")
+    set_source_files_properties(sph_whirlpool.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
 endif()
 
 include_directories(.)
