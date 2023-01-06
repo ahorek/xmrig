@@ -27,7 +27,7 @@
 #include "sph_cubehash.h"
 #include "sph_shavite.h"
 #include "sph_simd.h"
-#include "sph_echo.h"
+#include "echo-aesni.h"
 #include "sph_hamsi.h"
 #include "fugue-aesni.h"
 #include "sph_shabal.h"
@@ -325,8 +325,8 @@ void benchmark()
 
         const CnHash::AlgoVariant* av = Cpu::info()->hasAES() ? av_hw_aes : av_soft_aes;
 
-        uint8_t buf[80];
-        uint8_t hash[32 * 8];
+        uint8_t buf[80] = { 0 };
+        uint8_t hash[32 * 8] = { 0 };
 
         LOG_VERBOSE("%24s |  N  | Hashrate", "Algorithm");
         LOG_VERBOSE("-------------------------|-----|-------------");
@@ -516,6 +516,7 @@ HelperThread* create_helper_thread(int64_t cpu_index, int priority, const std::v
                 if (hwloc_bitmap_isset(s, cpu_index)) {
                     hwloc_bitmap_andnot(helper_cpu_set, s, main_threads_set);
                     if (hwloc_bitmap_weight(helper_cpu_set) > 0) {
+                        hwloc_bitmap_free(main_threads_set);
                         return true;
                     }
                 }
@@ -527,6 +528,8 @@ HelperThread* create_helper_thread(int64_t cpu_index, int priority, const std::v
             }
         }
     }
+    hwloc_bitmap_free(helper_cpu_set);
+    hwloc_bitmap_free(main_threads_set);
 #endif
 
     return nullptr;

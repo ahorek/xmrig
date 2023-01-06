@@ -6,7 +6,7 @@ set(HEADERS
     sph_blake.h
     sph_bmw.h
     sph_cubehash.h
-    sph_echo.h
+    echo-aesni.h
     fugue-aesni.h
     sph_groestl.h
     sph_hamsi.h
@@ -26,7 +26,7 @@ set(SOURCES
     sph_blake.c
     sph_bmw.c
     sph_cubehash.c
-    sph_echo.c
+    echo-aesni.c
     fugue-aesni.c
     sph_groestl.c
     sph_hamsi.c
@@ -46,8 +46,8 @@ if (CMAKE_C_COMPILER_ID MATCHES MSVC)
     set_source_files_properties(sph_blake.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_bmw.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_cubehash.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
-    set_source_files_properties(sph_echo.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
-    set_source_files_properties(sph_fugue.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
+    set_source_files_properties(echo-aesni.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
+    set_source_files_properties(fugue-aesni.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_groestl.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_hamsi.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
     set_source_files_properties(sph_jh.c PROPERTIES COMPILE_FLAGS_RELEASE "/O1 /Oi /Os")
@@ -63,7 +63,7 @@ elseif (CMAKE_C_COMPILER_ID MATCHES GNU OR CMAKE_C_COMPILER_ID MATCHES Clang)
     set_source_files_properties(sph_blake.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
     set_source_files_properties(sph_bmw.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
     set_source_files_properties(sph_cubehash.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
-    set_source_files_properties(sph_echo.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
+    set_source_files_properties(echo-aesni.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
     set_source_files_properties(fugue-aesni.c PROPERTIES COMPILE_FLAGS "-Ofast -s -mavx2")
     set_source_files_properties(sph_groestl.c PROPERTIES COMPILE_FLAGS "-Os -s")
     set_source_files_properties(sph_hamsi.c PROPERTIES COMPILE_FLAGS "-Os -s")
