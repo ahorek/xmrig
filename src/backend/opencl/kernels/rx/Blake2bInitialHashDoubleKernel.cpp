@@ -5,8 +5,8 @@
  * Copyright 2014-2016 Wolf9466    <https://github.com/OhGodAPet>
  * Copyright 2016      Jay D Dee   <jayddee246@gmail.com>
  * Copyright 2017-2018 XMR-Stak    <https://github.com/fireice-uk>, <https://github.com/psychocrypt>
- * Copyright 2018-2024 SChernykh   <https://github.com/SChernykh>
- * Copyright 2016-2024 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
+ * Copyright 2018-2019 SChernykh   <https://github.com/SChernykh>
+ * Copyright 2016-2019 XMRig       <https://github.com/xmrig>, <support@xmrig.com>
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -22,39 +22,37 @@
  *   along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
-#include <csignal>
-#include <cerrno>
-#include <unistd.h>
+
+#include "backend/opencl/kernels/rx/Blake2bInitialHashDoubleKernel.h"
+#include "backend/opencl/wrappers/OclLib.h"
 
 
-#include "App.h"
-#include "base/io/log/Log.h"
-#include "core/Controller.h"
-
-
-bool xmrig::App::background(int &rc)
+void xmrig::Blake2bInitialHashDoubleKernel::enqueue(cl_command_queue queue, size_t threads)
 {
-    if (!m_controller->isBackground()) {
-        return false;
-    }
+    const size_t gthreads        = threads;
+    static const size_t lthreads = 64;
 
-    int i = fork();
-    if (i < 0) {
-        rc = 1;
+    enqueueNDRange(queue, 1, nullptr, &gthreads, &lthreads);
+}
 
-        return true;
-    }
 
-    if (i > 0) {
-        rc = 0;
+// __kernel void blake2b_initial_hash_double(__global void *out, __global const void* blockTemplate, uint blockTemplateSize, uint start_nonce)
+void xmrig::Blake2bInitialHashDoubleKernel::setArgs(cl_mem out, cl_mem blockTemplate)
+{
+    setArg(0, sizeof(cl_mem), &out);
+    setArg(1, sizeof(cl_mem), &blockTemplate);
+}
 
-        return true;
-    }
 
-    if (setsid() < 0) {
-        LOG_ERR("setsid() failed (errno = %d)", errno);
-    }
+void xmrig::Blake2bInitialHashDoubleKernel::setBlobSize(size_t size)
+{
+    const uint32_t s = size;
 
-    return false;
+    setArg(2, sizeof(uint32_t), &s);
+}
+
+
+void xmrig::Blake2bInitialHashDoubleKernel::setNonce(uint32_t nonce)
+{
+    setArg(3, sizeof(uint32_t), &nonce);
 }
